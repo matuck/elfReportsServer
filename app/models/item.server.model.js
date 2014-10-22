@@ -10,8 +10,17 @@ var mongoose = require('mongoose'),
  * Item Schema
  */
 var ItemSchema = new Schema({
-	// Item model fields   
-	// ...
+	name: {
+    	type: String,
+    },
+	created: {
+		type: Date,
+		default: Date.now
+	},
+	child: {
+		type: Schema.ObjectId,
+		ref: 'Child'
+	}
 });
 
 mongoose.model('Item', ItemSchema);

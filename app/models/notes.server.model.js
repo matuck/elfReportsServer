@@ -10,8 +10,20 @@ var mongoose = require('mongoose'),
  * Notes Schema
  */
 var NotesSchema = new Schema({
-	// Notes model fields   
-	// ...
+	good:  {
+		type: Boolean
+	},
+	text: {
+    	type: String,
+    },
+	created: {
+		type: Date,
+		default: Date.now
+	},
+	child: {
+		type: Schema.ObjectId,
+		ref: 'Child'
+	}
 });
 
 mongoose.model('Notes', NotesSchema);
