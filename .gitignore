@@ -7,3 +7,8 @@ public/lib
 app/tests/coverage/
 .bower-*/
 .idea/
+
+#cloud9 ignored files
+.c9/
+data/
+mongod
