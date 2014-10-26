@@ -44,19 +44,25 @@ exports.update = function(req, res) {
   if (req.child.user.id !== req.user.id) {
     res.status(403).send({ message: 'The user logged in does not have access to this child!' });
   } else {
-    var child = req.child ;
-
-    child = _.extend(child , req.body);
-
-    child.save(function(err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(child);
-      }
-    });
+    var user = req.user;
+    var elfin = user.isElfSignedin(req.session.elfsignintime);
+    if(elfin.loggedin) {
+      var child = req.child ;
+  
+      child = _.extend(child , req.body);
+  
+      child.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(child);
+        }
+      });
+    } else {
+      res.status(401).send({ 'message': elfin.message});
+    }
   }
 };
 
@@ -67,17 +73,23 @@ exports.delete = function(req, res) {
   if (req.child.user.id !== req.user.id) {
     res.status(403).send({ message: 'The user logged in does not have access to this child!' });
   } else {
-    var child = req.child;
-
-    child.remove(function (err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(child);
-      }
-    });
+    var user = req.user;
+    var elfin = user.isElfSignedin(req.session.elfsignintime);
+    if(elfin.loggedin) {
+      var child = req.child;
+  
+      child.remove(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(child);
+        }
+      });
+    } else {
+      res.status(401).send({ 'message': elfin.message});
+    }
   }
 };
 
