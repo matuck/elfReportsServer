@@ -1,8 +1,8 @@
 'use strict';
 
 // Children controller
-angular.module('children').controller('ChildrenController', ['$scope', '$stateParams', '$location', 'Authentication', 'Children', 'Item',
-	function($scope, $stateParams, $location, Authentication, Children, Item) {
+angular.module('children').controller('ChildrenController', ['$scope', '$stateParams', '$location', 'Authentication', 'Children', 'Item', 'Notes',
+	function($scope, $stateParams, $location, Authentication, Children, Item, Notes) {
 		$scope.authentication = Authentication;
 
 		// Create new Child
@@ -62,6 +62,13 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
 			});
 		};
 
+		// Find existing note
+		$scope.findNote = function() {
+			$scope.note = Notes.get({
+				childId: $stateParams.childId,
+				note: $stateParams.noteId
+			});
+		};
 		$scope.additem = function() {
 			var child = $scope.child ;
 			// Create new Item object
@@ -86,6 +93,41 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
 
 			item2.$remove(function(response) {
 				$scope.child = response;
+			});
+		};
+
+		$scope.addnote = function () {
+			var child = $scope.child;
+			var note = new Notes({
+				text: this.note,
+				good: this.good,
+				child: child._id
+			});
+			if (note.good === '') { note.good = false; }
+
+			note.$save(function(response) {
+				//load child back into scope
+				$scope.child = response;
+				//clear the form
+				$scope.note = '';
+				$scope.good = '';
+			});
+		};
+
+		$scope.removenote = function (note) {
+			var note2 = new Notes(note);
+			note2.$remove(function(response) {
+				$scope.child = response;
+			});
+		};
+
+		$scope.updatenote = function() {
+			var note = $scope.note ;
+
+			note.$update(function() {
+				$location.path('children/' + note.child);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
 			});
 		};
 	}

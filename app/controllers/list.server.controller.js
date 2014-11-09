@@ -66,7 +66,7 @@ exports.delete = function(req, res) {
  * List of Lists
  */
 exports.list = function(req, res) {
-    res.jsonp(req.child.list)
+    res.jsonp(req.child.list);
 };
 
 /**
