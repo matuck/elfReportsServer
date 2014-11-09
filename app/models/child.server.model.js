@@ -20,8 +20,8 @@ var ChildSchema = new Schema({
     type: Number,
     default: 50
   },
-  notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'notes' }],
-  list: [{ type: mongoose.Schema.Types.ObjectId, ref: 'item' }],
+  notes: [{ type: Schema.Types.ObjectId, ref: 'Notes' }],
+  list: [{ type: Schema.ObjectId, ref: 'Item' }],
 	created: {
 		type: Date,
 		default: Date.now

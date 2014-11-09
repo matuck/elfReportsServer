@@ -14,7 +14,7 @@ var NotesSchema = new Schema({
 		type: Boolean
 	},
 	text: {
-    	type: String,
+    	type: String
     },
 	created: {
 		type: Date,

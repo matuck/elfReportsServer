@@ -5,7 +5,27 @@
 		<div class="christmaslist">
 			Christmas List:
 			<div class="listitems" data-ng-repeat="item in child.list">
-				<div class="item">{{item.name}}</div>
+				<div class="item">{{item.name}}
+					<a class="btn btn-primary" data-ng-click="removeitem(item);">
+						<i class="glyphicon glyphicon-trash"></i>
+					</a></div>
+			</div>
+			<div class="listform col-md-12">
+				<form class="form-horizontal" data-ng-submit="additem()" novalidate>
+					<fieldset>
+						<div class="form-group">
+							<div class="controls">
+								<input type="text" data-ng-model="item" id="item" class="form-control" placeholder="Item" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<input type="submit" class="btn btn-default" value="Add Item">
+						</div>
+						<div data-ng-show="error" class="text-danger">
+							<strong data-ng-bind="error"></strong>
+						</div>
+					</fieldset>
+				</form>
 			</div>
 		</div>
 		<div class="notes">

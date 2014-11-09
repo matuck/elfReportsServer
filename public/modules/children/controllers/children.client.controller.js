@@ -1,8 +1,8 @@
 'use strict';
 
 // Children controller
-angular.module('children').controller('ChildrenController', ['$scope', '$stateParams', '$location', 'Authentication', 'Children',
-	function($scope, $stateParams, $location, Authentication, Children ) {
+angular.module('children').controller('ChildrenController', ['$scope', '$stateParams', '$location', 'Authentication', 'Children', 'Item',
+	function($scope, $stateParams, $location, Authentication, Children, Item) {
 		$scope.authentication = Authentication;
 
 		// Create new Child
@@ -59,6 +59,33 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
 		$scope.findOne = function() {
 			$scope.child = Children.get({ 
 				childId: $stateParams.childId
+			});
+		};
+
+		$scope.additem = function() {
+			var child = $scope.child ;
+			// Create new Item object
+			var item = new Item ({
+				name: this.item,
+				child: child._id
+			});
+
+			// Redirect after save
+			item.$save(function(response) {
+				//load the child back into the scope.
+				$scope.child = response;
+				// Clear form fields
+				$scope.item = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		$scope.removeitem = function(item) {
+			var item2 = new Item(item);
+
+			item2.$remove(function(response) {
+				$scope.child = response;
 			});
 		};
 	}

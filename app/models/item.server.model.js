@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
  */
 var ItemSchema = new Schema({
 	name: {
-    	type: String,
+    	type: String
     },
 	created: {
 		type: Date,

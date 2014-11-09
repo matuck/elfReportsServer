@@ -48,9 +48,9 @@ exports.update = function(req, res) {
     var elfin = user.isElfSignedin(req.session.elfsignintime);
     if(elfin.loggedin) {
       var child = req.child ;
-  
+
       child = _.extend(child , req.body);
-  
+
       child.save(function(err) {
         if (err) {
           return res.status(400).send({
@@ -77,7 +77,7 @@ exports.delete = function(req, res) {
     var elfin = user.isElfSignedin(req.session.elfsignintime);
     if(elfin.loggedin) {
       var child = req.child;
-  
+
       child.remove(function (err) {
         if (err) {
           return res.status(400).send({
@@ -110,9 +110,10 @@ exports.list = function(req, res) { Child.find({ user: req.user }).sort('-create
 /**
  * Child middleware
  */
-exports.childByID = function(req, res, next, id) { Child.findById(id).populate('user', 'displayName').exec(function(err, child) {
+exports.childByID = function(req, res, next, id) { Child.findById(id).populate('user', 'displayName').populate('list notes').exec(function(err, child) {
 		if (err) return next(err);
 		if (! child) return next(new Error('Failed to load Child ' + id));
+    //child.populate();
 		req.child = child ;
 		next();
 	});
