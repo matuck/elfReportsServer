@@ -200,25 +200,38 @@ exports.changePassword = function(req, res, next) {
 				if (!err && user) {
 					if (user.authenticate(passwordDetails.currentPassword)) {
 						if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
-							user.password = passwordDetails.newPassword;
+							if(passwordDetails.newElfPassword) {
+								if(passwordDetails.newElfPassword === passwordDetails.verifyElfPassword) {
+									user.password = passwordDetails.newPassword;
+									user.elfPassword = passwordDetails.newElfPassword;
 
-							user.save(function(err) {
-								if (err) {
-									return res.status(400).send({
-										message: errorHandler.getErrorMessage(err)
-									});
-								} else {
-									req.login(user, function(err) {
+									user.save(function (err) {
 										if (err) {
-											res.status(400).send(err);
+											return res.status(400).send({
+												message: errorHandler.getErrorMessage(err)
+											});
 										} else {
-											res.send({
-												message: 'Password changed successfully'
+											req.login(user, function (err) {
+												if (err) {
+													res.status(400).send(err);
+												} else {
+													res.send({
+														message: 'Password changed successfully'
+													});
+												}
 											});
 										}
 									});
+								} else {
+									res.status(400).send({
+										message: 'Elf Passwords do not match'
+									});
 								}
-							});
+							} else {
+								res.status(400).send({
+									message: 'Please provide a new Elf password'
+								});
+							}
 						} else {
 							res.status(400).send({
 								message: 'Passwords do not match'

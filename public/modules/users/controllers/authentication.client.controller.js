@@ -24,7 +24,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$cook
 				$scope.authentication.user = response;
 
 				// And redirect to the index page
-				$location.path('/');
+				$location.path('/children');
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
@@ -37,7 +37,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$cook
 
         // And redirect to the index page
         $cookies.elfsignintime = response.elfsignintime;
-        $location.path('/');
+        $location.path('/children');
       }).error(function(response) {
         $scope.error = response.message;
       });

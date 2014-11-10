@@ -44,12 +44,12 @@ var UserSchema = new Schema({
 	},
 	password: {
 		type: String,
-		default: '',
+		default: ''
 		//validate: [validateLocalStrategyPassword, 'Password should be longer']
 	},
   elfPassword: {
     type: String,
-    default: '',
+    default: ''
     //validate: [validateLocalStrategyPassword, 'Password should be longer']
   },
 	salt: {
@@ -88,7 +88,7 @@ var UserSchema = new Schema({
  * Hook a pre save method to hash the password
  */
 UserSchema.pre('save', function(next) {
-  this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+	this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 	if (this.password && this.password.length > 6) {
 		this.password = this.hashPassword(this.password);
 	}
