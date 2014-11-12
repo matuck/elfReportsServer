@@ -15,5 +15,68 @@
 }
 
 body {
-	background: url("/modules/core/img/parchment.png");
+	/* background: url("/modules/core/img/parchment.png");*/
+	/*background: #1C86EE;#0174DF;*/
+	background: url("/modules/core/img/starrynight-bg.jpg");
+	color: #cccccc;
+}
+
+div {
+	background: transparent;
+}
+
+.list-group-item {
+	background-color: transparent;
+	border: 0px;
+	height: 100px;
+	color: #ffffff;
+}
+h4.list-group-item-heading.ng-binding {
+	color: #ffffff;
+}
+a.list-group-item {
+	color: #ffffff;
+}
+a.list-group-item:hover {
+	color: #ffffff;
+	background-color: transparent;
+}
+.naughtymeter {
+	Display: Inline-Block;
+}
+
+div.footerbackground {
+	position:fixed;
+	width:100%;
+	height:167px;
+	bottom:0px;
+	background: url("/modules/core/img/snowhill.png");
+	background-repeat: repeat-x;
+	z-index: 100;
+}
+div.footerbuffer {
+	width:100%;
+	height:180px;
+	z-index: -1;
+}
+
+.elfreportsbanner {
+	width: 775px;
+	margin: 0 auto;
+}
+
+.frontelf {
+	width: 500px;
+	margin: 0 auto;
+}
+.note {
+	min-height: 50px;
+}
+
+.goodnote {
+	background-color: rgba(0, 255, 0, 0.4);
+}
+
+.badnote {
+	background-color: rgba(255, 50, 0, 0.7);
 }

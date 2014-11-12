@@ -130,5 +130,19 @@ angular.module('children').controller('ChildrenController', ['$scope', '$statePa
 				$scope.error = errorResponse.data.message;
 			});
 		};
+
+		$scope.changePercent = function(child) {
+			if(Authentication.isElfSignedin() === false) {
+				$location.path('/');
+			} else {
+				child.percent = this.child.percent;
+				child.$update(function(response) {
+					//$location.path('children/' + child._id);
+				}, function(errorResponse) {
+					$scope.error = errorResponse.data.message;
+				});
+			}
+
+		};
 	}
 ]);

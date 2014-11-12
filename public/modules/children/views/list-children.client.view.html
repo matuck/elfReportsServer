@@ -1,12 +1,19 @@
 <section data-ng-controller="ChildrenController" data-ng-init="find()">
     <div class="page-header">
-        <h1>Children</h1>
+        <h1>Elf's Family Overview</h1>
     </div>
     <div class="list-group">
         <a data-ng-repeat="child in children" data-ng-href="#!/children/{{child._id}}" class="list-group-item">
-			<h4 class="list-group-item-heading" data-ng-bind="child.name"></h4>
-			<h4 class="list-group-item-heading" data-ng-bind="child.percent"></h4>
-			<h4 class="list-group-item-heading" data-ng-bind="child.notes.length"></h4>
+			<div class="pull-left"><h4 class="list-group-item-heading" data-ng-bind="child.name"></h4>
+          <div class="list-group-item-text">Christmas List Count: {{child.list.length}}</div>
+        <div class="list-group-item-text">Elf Notes Count: {{child.notes.length}}</div>
+      </div>
+
+			<form>
+         <div class="naughtymeter pull-right"><span class="naughtymeter">Naughty</span><span class="naughtymeter naughtymeter-meter"><input type="range" name="percent" id="percent" min="0" max="100" ng-model="child.percent" ng-mouseup="changePercent(child)" value="{{child.percent}}" /></span><span class="naughtymeter">Nice</span></div>
+      </form>
+
+
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!children.$resolved || children.length">
