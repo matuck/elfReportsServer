@@ -125,28 +125,35 @@ exports.reset = function(req, res, next) {
 			}, function(err, user) {
 				if (!err && user) {
 					if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
-						user.password = passwordDetails.newPassword;
-						user.resetPasswordToken = undefined;
-						user.resetPasswordExpires = undefined;
+						if(passwordDetails.newElfPassword === passwordDetails.verifyElfPassword) {
+							user.password = passwordDetails.newPassword;
+							user.elfPassword = passwordDetails.newElfPassword;
+							user.resetPasswordToken = undefined;
+							user.resetPasswordExpires = undefined;
 
-						user.save(function(err) {
-							if (err) {
-								return res.status(400).send({
-									message: errorHandler.getErrorMessage(err)
-								});
-							} else {
-								req.login(user, function(err) {
-									if (err) {
-										res.status(400).send(err);
-									} else {
-										// Return authenticated user 
-										res.jsonp(user);
+							user.save(function (err) {
+								if (err) {
+									return res.status(400).send({
+										message: errorHandler.getErrorMessage(err)
+									});
+								} else {
+									req.login(user, function (err) {
+										if (err) {
+											res.status(400).send(err);
+										} else {
+											// Return authenticated user
+											res.jsonp(user);
 
-										done(err, user);
-									}
-								});
-							}
-						});
+											done(err, user);
+										}
+									});
+								}
+							});
+						} else {
+							res.status(400).send({
+								message: 'Elf Passwords do not match'
+							});
+						}
 					} else {
 						return res.status(400).send({
 							message: 'Passwords do not match'
