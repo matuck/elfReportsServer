@@ -96,12 +96,13 @@ exports.delete = function(req, res) {
 /**
  * List of Children
  */
-exports.list = function(req, res) { Child.find({ user: req.user }).sort('-created').populate('user', 'displayName').exec(function(err, children) {
+exports.list = function(req, res) { Child.find({ user: req.user }).sort('-created').populate('user', 'displayName').populate('list notes').exec(function(err, children) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+      console.log('boo');
 			res.jsonp(children);
 		}
 	});
