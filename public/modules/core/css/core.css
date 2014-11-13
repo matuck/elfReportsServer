@@ -83,11 +83,19 @@ div.footerbuffer {
 
 .elfad {
 	width: 120px;
+	postion: fixed;
+	left: 0px;
 	background-color: white;
 	border-radius: 10px;
 	color: black;
-	margin-left: -30px;
 	padding: 5px;
+}
 
-	margin-right: 20px;
+section.container {
+	margin-left: 120px;
+
+}
+
+.listform, .addnoteform {
+	padding-left: 15px;
 }
