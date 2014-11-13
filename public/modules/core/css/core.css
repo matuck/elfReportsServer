@@ -96,6 +96,14 @@ section.container {
 
 }
 
-.listform, .addnoteform {
+.listform, .addnoteform, .messageform {
 	padding-left: 15px;
+}
+
+.messageform, .emaillink, .sociallinks {
+	padding-top: 20px;
+}
+
+.messageform textarea, .messageform input {
+	color: black;
 }

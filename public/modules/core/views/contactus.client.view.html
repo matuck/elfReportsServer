@@ -1,3 +1,24 @@
-<section class="row" data-ng-controller="HomeController">
-  <div>This page is under contruction</div>
+<section data-ng-controller="HomeController">
+  <div class="page-header">
+    <h1>Contact Us</h1>
+  </div>
+  <div class="sociallinks"><a target="_blank" href="https://www.facebook.com/elfreports"><img width="20%" height="20%" src="/modules/core/img/facebook.jpg" /></a></div>
+  <div class="emaillink">Email: <a href="mailto:support@elfreports.com">support@elfreports.com</a></div>
+  <div class="messageform">
+    <form class="form-horizontal" data-ng-submit="sendmessage()" novalidate>
+    <fieldset>
+      <div class="form-group">
+        <div class="controls">
+          <div><label for="data.email">Your Email:</label><input type="text" data-ng-model="data.email" name="data.email" /></div>
+          <div><textarea name="message" data-ng-model="data.message" cols="50" rows="10"></textarea></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-default" value="Send Message">
+      </div>
+      <div data-ng-show="error" class="text-danger">
+        <strong data-ng-bind="error"></strong>
+      </div>
+    </fieldset>
+  </form></div>
 </section>
