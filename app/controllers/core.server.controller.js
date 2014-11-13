@@ -17,17 +17,18 @@ exports.index = function(req, res) {
  * Send an email message
  */
 exports.sendmessage = function(req, res, next) {
-	console.log(req.body);
+	/*console.log(req.body);
 	async.waterfall([
 		// If valid email, send reset email using service
 		function(done) {
 			var smtpTransport = nodemailer.createTransport(config.mailer.options);
 			var mailOptions = {
-				to: 'suppoprt@elfreports.com',
-				from: req.body.email,
+				to: 'support@elfreports.com',
+				from: 'support@elfreports.com',
 				subject: 'Message from Website',
 				html: req.body.message
 			};
+			console.log(config.mailer.options);
 			smtpTransport.sendMail(mailOptions, function(err) {
 				if (!err) {
 					res.send({
@@ -40,5 +41,5 @@ exports.sendmessage = function(req, res, next) {
 		}
 	], function(err) {
 		if (err) return next(err);
-	});
+	});*/
 };
