@@ -18,7 +18,13 @@ var validateLocalStrategyProperty = function(property) {
  * A Validation function for local strategy password
  */
 var validateLocalStrategyPassword = function(password) {
-	return (this.provider !== 'local' || (password && password.length > 6));
+	return (this.provider !== 'local' || (password && password.length > 8));
+};
+/**
+ * A Validation function for elf password
+ */
+var validateElfPassword = function(password) {
+	return (this.provider !== 'local' || (password && password.length > 8));
 };
 
 /**
@@ -44,13 +50,13 @@ var UserSchema = new Schema({
 	},
 	password: {
 		type: String,
-		default: ''
-		//validate: [validateLocalStrategyPassword, 'Password should be longer']
+		default: '',
+		validate: [validateLocalStrategyPassword, 'Password should be 8 characters or longer']
 	},
   elfPassword: {
     type: String,
-    default: ''
-    //validate: [validateLocalStrategyPassword, 'Password should be longer']
+    default: '',
+    validate: [validateElfPassword, 'Elf Password should be 8 characters or longer']
   },
 	salt: {
 		type: String
