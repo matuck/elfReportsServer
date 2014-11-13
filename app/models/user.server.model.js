@@ -18,13 +18,13 @@ var validateLocalStrategyProperty = function(property) {
  * A Validation function for local strategy password
  */
 var validateLocalStrategyPassword = function(password) {
-	return (this.provider !== 'local' || (password && password.length > 8));
+	return (this.provider !== 'local' || (password && password.length >= 8));
 };
 /**
  * A Validation function for elf password
  */
 var validateElfPassword = function(password) {
-	return (this.provider !== 'local' || (password && password.length > 8));
+	return (this.provider !== 'local' || (password && password.length >= 8));
 };
 
 /**
