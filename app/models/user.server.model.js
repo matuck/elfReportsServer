@@ -61,6 +61,14 @@ var UserSchema = new Schema({
 	salt: {
 		type: String
 	},
+	elfsignintime: {
+		type: String,
+		default: ''
+	},
+	elfname: {
+		type: String,
+		default: ''
+	},
 	provider: {
 		type: String,
 		required: 'Provider is required'
@@ -94,13 +102,16 @@ var UserSchema = new Schema({
  * Hook a pre save method to hash the password
  */
 UserSchema.pre('save', function(next) {
-	this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-	if (this.password && this.password.length > 6) {
-		this.password = this.hashPassword(this.password);
+	if(this.updatepasswords === true) {
+		delete this.updatepasswords;
+		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+		if (this.password && this.password.length > 6) {
+			this.password = this.hashPassword(this.password);
+		}
+		if (this.elfPassword && this.elfPassword.length > 6) {
+			this.elfPassword = this.hashPassword(this.elfPassword);
+		}
 	}
-  if (this.elfPassword && this.elfPassword.length > 6) {
-    this.elfPassword = this.hashPassword(this.elfPassword);
-  }
 	next();
 });
 
@@ -132,8 +143,9 @@ UserSchema.methods.elfauthenticate = function(password) {
 /**
  * check if elf is authenticated
  */
-UserSchema.methods.isElfSignedin = function($signedintime) {
-  if($signedintime === undefined) {
+UserSchema.methods.isElfSignedin = function() {
+	var $signedintime = this.elfsignintime;
+  if($signedintime === undefined || $signedintime === '') {
     return {
       'loggedin': false,
       'message': 'Not Signed in'

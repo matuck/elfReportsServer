@@ -130,6 +130,7 @@ exports.reset = function(req, res, next) {
 							user.elfPassword = passwordDetails.newElfPassword;
 							user.resetPasswordToken = undefined;
 							user.resetPasswordExpires = undefined;
+							user.updatepasswords = true;
 
 							user.save(function (err) {
 								if (err) {
@@ -211,7 +212,7 @@ exports.changePassword = function(req, res, next) {
 								if(passwordDetails.newElfPassword === passwordDetails.verifyElfPassword) {
 									user.password = passwordDetails.newPassword;
 									user.elfPassword = passwordDetails.newElfPassword;
-
+									user.updatepasswords = true;
 									user.save(function (err) {
 										if (err) {
 											return res.status(400).send({

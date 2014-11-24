@@ -13,9 +13,7 @@ var mongoose = require('mongoose'),
  * Create a List
  */
 exports.create = function(req, res) {
-    if (req.child.user.id !== req.user.id) {
-        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
-    } else {
+    if (req.child.user.id === req.user.id || req.child.user.id === req.user._id) {
         var item = new List(req.body);
         Child.findById(item.child).populate('user', 'displayName').populate('list notes').exec(function (err, child) {
             item.save();
@@ -30,6 +28,8 @@ exports.create = function(req, res) {
                 }
             });
         });
+    } else {
+        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
     }
 };
 
@@ -37,9 +37,7 @@ exports.create = function(req, res) {
  * Delete a List item
  */
 exports.delete = function(req, res) {
-    if (req.child.user.id !== req.user.id) {
-        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
-    } else {
+    if (req.child.user.id === req.user.id || req.child.user.id === req.user._id) {
         var item = req.item;
 
         item.remove(function (err) {
@@ -59,6 +57,8 @@ exports.delete = function(req, res) {
                 });
             }
         });
+    } else {
+        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
     }
 };
 

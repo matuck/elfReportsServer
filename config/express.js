@@ -15,6 +15,7 @@ var express = require('express'),
 	mongoStore = require('connect-mongo')({
 		session: session
 	}),
+	jwtconf = require('./jwtconfig'),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
@@ -50,6 +51,7 @@ module.exports = function(db) {
 		level: 9
 	}));
 
+
 	// Showing stack errors
 	app.set('showStackError', true);
 
@@ -59,6 +61,7 @@ module.exports = function(db) {
 	// Set views path and view engine
 	app.set('view engine', 'server.view.html');
 	app.set('views', './app/views');
+
 
 	// Environment dependent middleware
 	if (process.env.NODE_ENV === 'development') {
@@ -99,6 +102,22 @@ module.exports = function(db) {
 	app.use(passport.initialize());
 	app.use(passport.session());
 
+	app.set('jwtTokenSecret', jwtconf.secret);
+	app.all('/*', function(req, res, next) {
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT');
+		res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, x-access-token, authorization, Content-Type, Accept');
+		next();
+	}).options('*', function(req, res, next){
+		res.end();
+	});
+var securedurls = ['/children*', '/users*', '/auth/elfsignin', '/auth/elfsignout']
+	app.all(securedurls,
+			passport.authenticate('token', { session: true }),
+			function(req, res, next){
+				next();
+			});
+
 	// connect flash for flash messages
 	app.use(flash());
 
@@ -109,7 +128,7 @@ module.exports = function(db) {
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
 
-	// Setting the app router and static folder
+
 	app.use(express.static(path.resolve('./public')));
 
 	// Globbing routing files

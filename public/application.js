@@ -1,7 +1,12 @@
 'use strict';
 
 //Start by defining the main module and adding the module dependencies
-angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
+angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies).run(function($http) {
+	if (window.localStorage.getItem('token') !== null && window.localStorage.getItem('token') !== 'undefined') {
+		$http.defaults.headers.common['x-access-token'] = window.localStorage.getItem('token');
+		$http.defaults.headers.common['authorization'] = window.localStorage.getItem('token');
+	}
+});
 
 // Setting HTML5 Location Mode
 angular.module(ApplicationConfiguration.applicationModuleName).config(['$locationProvider',

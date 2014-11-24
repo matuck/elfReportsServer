@@ -30,10 +30,10 @@ exports.create = function(req, res) {
  * Show the current Child
  */
 exports.read = function(req, res) {
-  if (req.child.user.id !== req.user.id) {
-    res.status(403).send({ message: 'The user logged in does not have access to this child!' });
-  } else {
+  if (req.child.user.id === req.user._id || req.child.user.id === req.user.id) {
     res.jsonp(req.child);
+  } else {
+    res.status(403).send({ message: 'The user logged in does not have access to this child!' });
   }
 };
 
@@ -96,13 +96,12 @@ exports.delete = function(req, res) {
 /**
  * List of Children
  */
-exports.list = function(req, res) { Child.find({ user: req.user }).sort('-created').populate('user', 'displayName').populate('list notes').exec(function(err, children) {
+exports.list = function(req, res) { Child.find({ user: req.user._id }).sort('-created').populate('user', 'displayName').populate('list notes').exec(function(err, children) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-      console.log('boo');
 			res.jsonp(children);
 		}
 	});
@@ -124,8 +123,9 @@ exports.childByID = function(req, res, next, id) { Child.findById(id).populate('
  * Child authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.child.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
-	next();
+	if (req.child.user.id === req.user.id || req.child.user.id === req.user._id) {
+    next();
+	} else {
+    return res.status(403).send('User is not authorized');
+  }
 };

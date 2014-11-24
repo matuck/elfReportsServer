@@ -7,7 +7,8 @@ var _ = require('lodash'),
 	errorHandler = require('../errors'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
-	User = mongoose.model('User');
+	User = mongoose.model('User'),
+	jwt = require('jwt-simple');
 
 /**
  * Signup
@@ -23,7 +24,7 @@ exports.signup = function(req, res) {
 	// Add missing user fields
 	user.provider = 'local';
 	user.displayName = user.username;
-
+  user.updatepasswords = true;
 	// Then save the user 
 	user.save(function(err) {
 		if (err) {
@@ -40,7 +41,8 @@ exports.signup = function(req, res) {
 				if (err) {
 					res.status(400).send(err);
 				} else {
-					res.jsonp(user);
+					var token = jwt.encode(user, req.app.get('jwtTokenSecret'));
+					res.jsonp({ token: token, user: user });
 				}
 			});
 		}
@@ -64,7 +66,8 @@ exports.signin = function(req, res, next) {
 				if (err) {
 					res.status(400).send(err);
 				} else {
-					res.jsonp(user);
+					var token = jwt.encode(user, req.app.get('jwtTokenSecret'));
+					res.jsonp({ token: token, user: user });
 				}
 			});
 		}
@@ -74,9 +77,14 @@ exports.signin = function(req, res, next) {
 exports.elfsignin = function(req, res) {
   User.find({_id: req.user._id}, function(err, user2) {
     if(user2[0].elfauthenticate(req.body.elfPassword)) {
-      var elfsignintime = new Date().getTime()/1000;
-      req.session.elfsignintime = elfsignintime;
-      res.jsonp( { elfsignintime: req.session.elfsignintime  });
+			user2[0].elfsignintime = new Date().getTime()/1000;
+			user2[0].save(function(err) {
+				if(err) {
+					res.jsonp({ message: err });
+				} else {
+					res.jsonp( { elfsignintime: user2[0].elfsignintime  });
+				}
+			});
     }
     else {
       delete req.session.elfsignintime;
@@ -89,8 +97,16 @@ exports.elfsignin = function(req, res) {
  * signs the elf out
  */
 exports.elfsignout = function(req, res) {
-  delete req.session.elfsignintime;
-  res.jsonp({success: true});
+	User.find({_id: req.user._id}, function(err, user2) {
+		user2[0].elfsignintime = '';
+		user2[0].save(function(err) {
+			if(err) {
+				res.jsonp({ message: err });
+			} else {
+				res.jsonp({success: true});
+			}
+		});
+	});
 };
 /**
  * Signout

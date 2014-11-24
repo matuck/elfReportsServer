@@ -7,15 +7,14 @@ var mongoose = require('mongoose'),
     errorHandler = require('./errors'),
     Notes = mongoose.model('Notes'),
     Child = mongoose.model('Child'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    User = require('mongoose').model('User');
 
 /**
  * Create a Note
  */
 exports.create = function(req, res) {
-    if (req.child.user.id !== req.user.id) {
-        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
-    } else {
+    if (req.child.user.id === req.user.id || req.child.user.id === req.user._id) {
         var user = req.user;
         var elfin = user.isElfSignedin(req.session.elfsignintime);
         if(elfin.loggedin) {
@@ -36,6 +35,8 @@ exports.create = function(req, res) {
         } else {
             res.status(401).send({ 'message': elfin.message});
         }
+    } else {
+        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
     }
 };
 
@@ -51,9 +52,7 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
     console.log(req.body);
-    if (req.child.user.id !== req.user.id) {
-        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
-    } else {
+    if (req.child.user.id === req.user.id || req.child.user.id === req.user._id) {
         var user = req.user;
         var elfin = user.isElfSignedin(req.session.elfsignintime);
         if(elfin.loggedin) {
@@ -73,6 +72,8 @@ exports.update = function(req, res) {
         } else {
             res.status(401).send({ 'message': elfin.message});
         }
+    } else {
+        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
     }
 };
 
@@ -80,9 +81,7 @@ exports.update = function(req, res) {
  * Delete an Note
  */
 exports.delete = function(req, res) {
-    if (req.child.user.id !== req.user.id) {
-        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
-    } else {
+    if (req.child.user.id === req.user.id || req.child.user.id === req.user._id) {
         var user = req.user;
         var elfin = user.isElfSignedin(req.session.elfsignintime);
         if(elfin.loggedin) {
@@ -108,6 +107,9 @@ exports.delete = function(req, res) {
         } else {
             res.status(401).send({ 'message': elfin.message});
         }
+    } else {
+        res.status(403).send({ message: 'The user logged in does not have access to this child!' });
+
     }
 };
 

@@ -9,8 +9,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$cook
 		$scope.signup = function() {
 			$http.post('/auth/signup', $scope.credentials).success(function(response) {
 				// If successful we assign the response to the global user model
-				$scope.authentication.user = response;
-
+				$scope.authentication.user = response.user;
+				window.localStorage.setItem('token', response.token);
+				$http.defaults.headers.common['x-access-token'] = response.token;
+				$http.defaults.headers.common['authorization'] = response.token;
 				// And redirect to the index page
 				$location.path('/');
 			}).error(function(response) {
@@ -21,8 +23,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$cook
 		$scope.signin = function() {
 			$http.post('/auth/signin', $scope.credentials).success(function(response) {
 				// If successful we assign the response to the global user model
-				$scope.authentication.user = response;
-
+				$scope.authentication.user = response.user;
+				window.localStorage.setItem('token', response.token);
+				$http.defaults.headers.common['x-access-token'] = response.token;
+				$http.defaults.headers.common['authorization'] = response.token;
 				// And redirect to the index page
 				$location.path('/children');
 			}).error(function(response) {
