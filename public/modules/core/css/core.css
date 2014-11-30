@@ -91,6 +91,15 @@ div.footerbuffer {
 	padding: 5px;
 }
 
+.adsensead {
+	width: 120px;
+	postion: fixed;
+	left: 0px;
+	/*background-color: white;*/
+	border-radius: 10px;
+	color: black;
+	padding: 5px;
+}
 section.container {
 	margin-left: 120px;
 
