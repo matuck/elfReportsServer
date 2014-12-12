@@ -24,6 +24,9 @@
 			</li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
+			<li ui-route="/adoptanelf" ng-class="{active: $uiRoute}">
+				<a href="/#!/adoptanelf">Adopt an Elf</a>
+			</li>
 			<li ui-route="/contactus" ng-class="{active: $uiRoute}">
 				<a href="/#!/contactus">Contact Us</a>
 			</li>
@@ -43,6 +46,9 @@
 			</li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
+			<li ui-route="/adoptanelf" ng-class="{active: $uiRoute}">
+				<a href="/#!/adoptanelf">Adopt an Elf</a>
+			</li>
 			<li ui-route="/contactus" ng-class="{active: $uiRoute}">
 				<a href="/#!/contactus">Contact Us</a>
 			</li>

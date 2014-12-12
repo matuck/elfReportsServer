@@ -12,6 +12,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 			url: '/',
 			templateUrl: 'modules/core/views/home.client.view.html'
 		}).
+		state('adoptanelf', {
+			url: '/adoptanelf',
+			templateUrl: 'modules/core/views/adoptanelf.client.view.html'
+		}).
 		state('contactus', {
 			url: '/contactus',
 			templateUrl: 'modules/core/views/contactus.client.view.html'
