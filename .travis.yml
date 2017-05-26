@@ -6,3 +6,6 @@ env:
   - NODE_ENV=travis
 services:
   - mongodb
+before_install:
+  - npm install -g npm
+  - npm install
